@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Solver
 {
-    class LinearSolver
+    public class LinearSolver
     {
 				#region Definitions
 				private float[,] matrixOfA;
@@ -46,18 +46,18 @@ namespace Solver
 						get;
 						private set;
 				} = 0;
-				public List<Equation> equations
+				internal List<Equation> equations
 				{
 						get;
 						private set;
 				} = new List<Equation>();
+				#endregion
+
+				#region Constructors
 				public LinearSolver()
 				{
 
 				}
-				#endregion
-
-				#region Constructors
 				public LinearSolver(params Equation[] prms)
 				{
 						foreach(Equation eq in prms)
@@ -69,7 +69,7 @@ namespace Solver
 				#endregion
 
 				#region Management
-				public void AddEquation(Equation eq)
+				internal  void AddEquation(Equation eq)
 				{
 						numberOfXs = eq.parameters.Count > numberOfXs ? eq.parameters.Count : numberOfXs;
 						equations.Add(eq);

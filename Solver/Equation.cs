@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Solver
 {
-		class Equation
+		public class Equation
 		{
 				public LinkedList<float> parameters
 				{
