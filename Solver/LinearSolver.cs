@@ -74,6 +74,11 @@ namespace Solver
 									}
 									UpdateMatrix();
 						}
+						public LinearSolver(List<Equation> eqs)
+						{
+									equations = eqs;
+									UpdateMatrix();
+						}
 						#endregion
 
 						#region Management
