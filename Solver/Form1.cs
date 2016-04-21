@@ -16,5 +16,22 @@ namespace Solver
 						{
 									InitializeComponent();
 						}
+
+						private void button1_Click(object sender, EventArgs e)
+						{
+									ConditionParser cp = new ConditionParser();
+									ConditionsMatrix cm = cp.ParseConditionsToArrayOfEquations(txt_in_matrix.Text);
+									LinearSolver ls = new LinearSolver(cm);
+									ls.LUP_Solve();
+
+									string solX = "X = [";
+									foreach(float a in ls.x)
+									{
+												solX += " " + a.ToString();
+									}
+									solX += " ]";
+
+									lb_solution_x.Text = solX;
+						}
 			}
 }

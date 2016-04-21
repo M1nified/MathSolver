@@ -79,6 +79,18 @@ namespace Solver
 									equations = eqs;
 									UpdateMatrix();
 						}
+						public LinearSolver(ConditionsMatrix cm)
+						{
+									for(int i = 0; i<cm.A.GetLength(0); i++)
+									{
+												float[] a = new float[cm.A.GetLength(1)];
+												for (int j = 0; j < cm.A.GetLength(1); j++)
+												{
+															a[j] = cm.A[i, j];
+												}
+												AddEquation(new Equation(cm.B[i], a));
+									}
+						}
 						#endregion
 
 						#region Management
