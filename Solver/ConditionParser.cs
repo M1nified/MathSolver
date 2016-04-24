@@ -28,23 +28,72 @@ namespace Solver
 									return base.GetHashCode();
 						}
 			}
-			public class Condition
+			public class Function
 			{
-						public static int CONDITION_LESS = -2;
-						public static int CONDITION_LESS_EQUAL = -1;
-						public static int CONDITION_EQUAL = 0;
-						public static int CONDITION_GREATER_EQUAL = 1;
-						public static int CONDITION_GREATER = 2;
+						public float[] MULTIPLY_BY;
+						public Function(params float[] args)//Funkcje typu: -3x1 + 5x2 - 9x3
+						{
+									MULTIPLY_BY = args;
+						}
+						public float Call(params float[] args)
+						{
+									if (args.Length != MULTIPLY_BY.Length)
+									{
+												throw new Exception("Wrong number of arguments for specified function");
+									}
+									else
+									{
+												float result = 0;
+												for (int i = 0; i < MULTIPLY_BY.Length; i++)
+												{
+															result += MULTIPLY_BY[i] * args[i];
+												}
+												return result;
+									}
+						}
+			}
+			public class Target
+			{
+						public static readonly byte DESIRE_MAXIMUM = 0;
+						public static readonly byte DESIRE_MINIMUM = 1;
+
+						public Function FUNCTION = null;
+						public byte DESIRE;
+
+						public Target(string desire, Function func)
+						{
+									SetDesire(desire);
+									FUNCTION = func;
+						}
+						public void SetDesire(string desire)
+						{
+									if (desire == "MAX")
+									{
+												DESIRE = DESIRE_MAXIMUM;
+									}
+									else if (desire == "MIN")
+									{
+												DESIRE = DESIRE_MINIMUM;
+									}
+						}
+			}
+			public class Condition : ICloneable
+			{
+						public static readonly int CONDITION_LESS = -2;
+						public static readonly int CONDITION_LESS_EQUAL = -1;
+						public static readonly int CONDITION_EQUAL = 0;
+						public static readonly int CONDITION_GREATER_EQUAL = 1;
+						public static readonly int CONDITION_GREATER = 2;
 
 						public Dictionary<string, float> ARGUMENTS;
-						public int COND;
+						public int CONDITION;
 						public Condition()
 						{
 									ARGUMENTS = new Dictionary<string, float>();
 						}
 						public Condition(int condition, Dictionary<string, float> arguments)
 						{
-									COND = condition;
+									CONDITION = condition;
 									ARGUMENTS = arguments;
 						}
 						public void AddArgument(Argument arg)
@@ -56,21 +105,21 @@ namespace Solver
 									switch (cond)
 									{
 												case "<":
-															COND = CONDITION_LESS;
+															CONDITION = CONDITION_LESS;
 															break;
 												case "<=":
 												case "=<":
-															COND = CONDITION_LESS_EQUAL;
+															CONDITION = CONDITION_LESS_EQUAL;
 															break;
 												case ">=":
 												case "=>":
-															COND = CONDITION_GREATER_EQUAL;
+															CONDITION = CONDITION_GREATER_EQUAL;
 															break;
 												case ">":
-															COND = CONDITION_GREATER;
+															CONDITION = CONDITION_GREATER;
 															break;
 												default:
-															COND = CONDITION_EQUAL;
+															CONDITION = CONDITION_EQUAL;
 															break;
 									}
 						}
@@ -78,7 +127,7 @@ namespace Solver
 						public override bool Equals(object obj)
 						{
 									Condition a = (Condition)obj;
-									if(a.COND == COND || ARGUMENTS.Equals(a.ARGUMENTS))
+									if (a.CONDITION == CONDITION || ARGUMENTS.Equals(a.ARGUMENTS))
 												return true;
 									return false;
 						}
@@ -86,22 +135,34 @@ namespace Solver
 						{
 									return base.GetHashCode();
 						}
+
+						public object Clone()
+						{
+									return MemberwiseClone();
+						}
 			}
 			public class ConditionsMatrix
 			{
 						public float[,] A;
 						public float[] B;
+						public Dictionary<string, int> COLUMNS = null;
 						public ConditionsMatrix(float[,] matrixOfA, float[] matrixOfB)
 						{
 									A = matrixOfA;
 									B = matrixOfB;
+						}
+						public ConditionsMatrix(float[,] matrixOfA, float [] matrixOfB, Dictionary<string,int> cols)
+						{
+									A = matrixOfA;
+									B = matrixOfB;
+									COLUMNS = cols;
 						}
 			}
 			public class ConditionParser
 			{
 						public static string PATT_COMP = @"(<=|>=|[<>=])";
 						public static string PATT_SUM = @"[-+]";
-						private static string PATT_ARG = @"([-+]?\d?)(\w\d?)?";
+						private static string PATT_ARG = @"([-+]?\d*)(\w\d?)?";
 
 						public ConditionParser()
 						{
@@ -166,6 +227,10 @@ namespace Solver
 						public ConditionsMatrix ParseConditionsToArrayOfEquations(string conds)
 						{
 									List<Condition> list = ParseConditionsToList(conds);
+									return ParseConditionsToArrayOfEquations(list);
+						}
+						public ConditionsMatrix ParseConditionsToArrayOfEquations(List<Condition> list)
+						{
 									int numofargs = 0;
 									Dictionary<string, int> column = new Dictionary<string, int>();
 									foreach (Condition cond in list)
@@ -179,6 +244,7 @@ namespace Solver
 												}
 									}
 									float[,] matrixOfA = new float[list.Count, numofargs];
+									for (int i = 0; i < matrixOfA.GetLength(0); i++) for (int j = 0; j < matrixOfA.GetLength(1); j++) matrixOfA[i, j] = 0;//zerowanie macierzy A
 									float[] matrixOfB = new float[list.Count];
 									int index = 0;
 									foreach (Condition cond in list)
@@ -197,7 +263,7 @@ namespace Solver
 												}
 												index++;
 									}
-									ConditionsMatrix cm = new ConditionsMatrix(matrixOfA, matrixOfB);
+									ConditionsMatrix cm = new ConditionsMatrix(matrixOfA, matrixOfB, column);
 									return cm;
 						}
 						#endregion

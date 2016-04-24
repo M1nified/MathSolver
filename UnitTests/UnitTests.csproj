@@ -51,7 +51,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ConditionParserTests.cs" />
+    <Compile Include="FunctionTests.cs" />
+    <Compile Include="LinearProblemTests.cs" />
     <Compile Include="LinearSolverTests.cs" />
+    <Compile Include="LineLimiterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

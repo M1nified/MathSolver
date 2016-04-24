@@ -42,9 +42,9 @@ namespace Solver.Tests
 									shouldbe.ARGUMENTS["x2"] = 1;
 									shouldbe.ARGUMENTS["x3"] = -1;
 									shouldbe.ARGUMENTS["FREE"] = -1;
-									shouldbe.COND = Condition.CONDITION_EQUAL;
+									shouldbe.CONDITION = Condition.CONDITION_EQUAL;
 									CollectionAssert.AreEqual(shouldbe.ARGUMENTS, res.ARGUMENTS);
-									Assert.AreEqual(shouldbe.COND, res.COND);
+									Assert.AreEqual(shouldbe.CONDITION, res.CONDITION);
 						}
 
 						[TestMethod()]
@@ -81,8 +81,8 @@ namespace Solver.Tests
 												};
 									float[] expectedMatrixOfB = new float[] { -2, 8, 6 };
 									ConditionsMatrix res = cp.ParseConditionsToArrayOfEquations(conditions1);
-									CollectionAssert.AreEqual(expectedMatrixOfA,res.A);
-									CollectionAssert.AreEqual(expectedMatrixOfB,res.B);
+									CollectionAssert.AreEqual(expectedMatrixOfA, res.A);
+									CollectionAssert.AreEqual(expectedMatrixOfB, res.B);
 						}
 
 			}
