@@ -119,9 +119,9 @@
 									this.label3.AutoSize = true;
 									this.label3.Location = new System.Drawing.Point(3, 156);
 									this.label3.Name = "label3";
-									this.label3.Size = new System.Drawing.Size(291, 13);
+									this.label3.Size = new System.Drawing.Size(282, 13);
 									this.label3.TabIndex = 2;
-									this.label3.Text = "Target: [1 2 3 4] -> MAX (means: 1x1+2x2+3x3+4x4 -> MAX)";
+									this.label3.Text = "Goal: [1 2 3 4] -> MAX (means: 1x1+2x2+3x3+4x4 -> MAX)";
 									// 
 									// txt_target
 									// 
