@@ -30,6 +30,8 @@ namespace Solver
 			}
 			public class Function
 			{
+						public static readonly string PATT_ARG = @"([-+]?\d*)(\w\d?)?";
+						public static readonly string PATT_MATR = @"^\[[\d,\s]+\]$";
 						public float[] MULTIPLY_BY;
 						public Function(params float[] args)//Funkcje typu: -3x1 + 5x2 - 9x3
 						{
@@ -51,6 +53,24 @@ namespace Solver
 												return result;
 									}
 						}
+						public static Function Parse(string input)
+						{
+									input = input.Trim();
+									if (Regex.IsMatch(input, PATT_MATR))//jesli zapisane jako tablica
+									{
+												MatchCollection matches = Regex.Matches(input, @"\d+");
+												float[] multiple_by = new float[matches.Count];
+												for (int i = 0; i < matches.Count; i++)
+												{
+															multiple_by[i] = float.Parse(matches[i].ToString());
+												}
+												return new Function(multiple_by);
+									}
+									else
+									{
+												throw new NotImplementedException();
+									}
+						}
 			}
 			public class Target
 			{
@@ -59,7 +79,6 @@ namespace Solver
 
 						public Function FUNCTION = null;
 						public byte DESIRE;
-
 						public Target(string desire, Function func)
 						{
 									SetDesire(desire);
@@ -67,6 +86,7 @@ namespace Solver
 						}
 						public void SetDesire(string desire)
 						{
+									desire = Regex.Replace(desire, @"\s+", "");
 									if (desire == "MAX")
 									{
 												DESIRE = DESIRE_MAXIMUM;
@@ -75,6 +95,12 @@ namespace Solver
 									{
 												DESIRE = DESIRE_MINIMUM;
 									}
+						}
+						public static Target Parse(string input)
+						{
+									Regex twoside = new Regex(@"->");
+									string[] sides = twoside.Split(input);
+									return new Target(sides[1], Function.Parse(sides[0]));
 						}
 			}
 			public class Condition : ICloneable
@@ -151,7 +177,7 @@ namespace Solver
 									A = matrixOfA;
 									B = matrixOfB;
 						}
-						public ConditionsMatrix(float[,] matrixOfA, float [] matrixOfB, Dictionary<string,int> cols)
+						public ConditionsMatrix(float[,] matrixOfA, float[] matrixOfB, Dictionary<string, int> cols)
 						{
 									A = matrixOfA;
 									B = matrixOfB;
@@ -174,9 +200,9 @@ namespace Solver
 									string sign = Regex.Match(cond, PATT_COMP).ToString();
 									return sign;
 						}
-						public Argument ParseArgument(string arg)
+						public static Argument ParseArgument(string input)
 						{
-									Match match = Regex.Match(arg, PATT_ARG);
+									Match match = Regex.Match(input, PATT_ARG);
 									string val = match.Groups[1].Value;
 									val = val == "" ? "1" : val;
 									val = val == "-" || val == "+" ? val + "1" : val;

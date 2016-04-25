@@ -25,5 +25,15 @@ namespace Solver.Tests
 									float res = f.Call(1, 1, 1);
 									Assert.AreEqual(9, res);
 						}
+
+						[TestMethod()]
+						public void ParseTest()
+						{
+									Function f;
+									f = Function.Parse("[1 2 3 4]");
+									CollectionAssert.AreEqual(new float[] { 1, 2, 3, 4 }, f.MULTIPLY_BY);
+									f = Function.Parse(" [1 2 3 4] ");
+									CollectionAssert.AreEqual(new float[] { 1, 2, 3, 4 }, f.MULTIPLY_BY);
+						}
 			}
 }

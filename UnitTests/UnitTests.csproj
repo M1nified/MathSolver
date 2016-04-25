@@ -56,6 +56,7 @@
     <Compile Include="LinearSolverTests.cs" />
     <Compile Include="LineLimiterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TargetTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Solver\Solver.csproj">

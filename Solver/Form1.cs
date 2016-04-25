@@ -20,18 +20,19 @@ namespace Solver
 						private void button1_Click(object sender, EventArgs e)
 						{
 									ConditionParser cp = new ConditionParser();
-									ConditionsMatrix cm = cp.ParseConditionsToArrayOfEquations(txt_in_matrix.Text);
-									LinearSolver ls = new LinearSolver(cm);
-									ls.LUP_Solve();
+									List<Condition> conds = cp.ParseConditionsToList(txt_in_matrix.Text);
+									string targ_str = txt_target.Text;
+									Target target = Target.Parse(targ_str);
 
-									string solX = "X = [";
-									foreach(float a in ls.x)
+									LinearProblem theProblem = new LinearProblem(conds, target);
+									float[] solution = theProblem.Solve();
+									string sol = "[ ";
+									foreach(float s in solution)
 									{
-												solX += " " + a.ToString();
+												sol += s.ToString()+" ";
 									}
-									solX += " ]";
-
-									lb_solution_x.Text = solX;
+									sol += "]";
+									lb_solution_x.Text = sol;
 						}
 			}
 }

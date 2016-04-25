@@ -50,7 +50,7 @@ namespace Solver.Tests
 						[TestMethod()]
 						public void ParseArgumentTest()
 						{
-									Argument res = cp.ParseArgument("-2x1");
+									Argument res = ConditionParser.ParseArgument("-2x1");
 									Argument shouldbe = new Argument("x1", -2);
 									Assert.AreEqual(shouldbe.NAME, res.NAME);
 									Assert.AreEqual(shouldbe.VALUE, res.VALUE);
