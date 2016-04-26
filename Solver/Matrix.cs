@@ -85,7 +85,6 @@ namespace Solver
 									{
 												throw new Exception("Determinant cannot be evaluated, no NxN matrix given.");
 									}
-									float det = 0;
 									int size = matrix.GetLength(0);
 									if (size == 1)
 									{
@@ -97,6 +96,7 @@ namespace Solver
 									}
 									else
 									{
+												float det = 0;
 												throw new NotImplementedException();
 									}
 						}

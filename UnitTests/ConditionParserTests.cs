@@ -24,45 +24,27 @@ namespace Solver.Tests
 						}
 
 						[TestMethod()]
-						public void GetEqualityTest()
+						public void GetTypeStringTest()
 						{
 									string sign;
-									sign = cp.GetEquality("x1 = 2");
+									sign = Condition.GetTypeString("x1 = 2");
 									Assert.AreEqual("=", sign);
-									sign = cp.GetEquality("x1 <= 2");
+									sign = Condition.GetTypeString("x1 <= 2");
 									Assert.AreEqual("<=", sign);
 						}
 
 						[TestMethod()]
 						public void ParseConditionTest()
 						{
-									Condition res, shouldbe = new Condition();
-									res = cp.ParseCondition("2x1 - 3x2 + 4x2 - x3= 1");
-									shouldbe.ARGUMENTS["x1"] = 2;
-									shouldbe.ARGUMENTS["x2"] = 1;
-									shouldbe.ARGUMENTS["x3"] = -1;
-									shouldbe.ARGUMENTS["FREE"] = -1;
-									shouldbe.CONDITION = Condition.CONDITION_EQUAL;
-									CollectionAssert.AreEqual(shouldbe.ARGUMENTS, res.ARGUMENTS);
-									Assert.AreEqual(shouldbe.CONDITION, res.CONDITION);
-						}
-
-						[TestMethod()]
-						public void ParseArgumentTest()
-						{
-									Argument res = ConditionParser.ParseArgument("-2x1");
-									Argument shouldbe = new Argument("x1", -2);
-									Assert.AreEqual(shouldbe.NAME, res.NAME);
-									Assert.AreEqual(shouldbe.VALUE, res.VALUE);
 						}
 
 						[TestMethod()]
 						public void ParseConditionsToListTest()
 						{
 									List<Condition> expected1 = new List<Condition>();
-									expected1.Add(cp.ParseCondition("3x1 + x2 + x3 = -2"));
-									expected1.Add(cp.ParseCondition("2x1 + 2x2 + 3x3 = 8"));
-									expected1.Add(cp.ParseCondition("x1 + 3x2 + 2x3 = 6"));
+									expected1.Add(Condition.Parse("3x1 + x2 + x3 = -2"));
+									expected1.Add(Condition.Parse("2x1 + 2x2 + 3x3 = 8"));
+									expected1.Add(Condition.Parse("x1 + 3x2 + 2x3 = 6"));
 									List<Condition> res = cp.ParseConditionsToList(conditions1);
 									CollectionAssert.AreEqual(expected1, res);
 									//AreConditionListEqual(expected1, res);
@@ -73,9 +55,9 @@ namespace Solver.Tests
 						public void ParseConditionsToArrayTest()
 						{
 									List<Condition> expected1 = new List<Condition>();
-									expected1.Add(cp.ParseCondition("3x1 + x2 + x3 = -2"));
-									expected1.Add(cp.ParseCondition("2x1 + 2x2 + 3x3 = 8"));
-									expected1.Add(cp.ParseCondition("x1 + 3x2 + 2x3 = 6"));
+									expected1.Add(Condition.Parse("3x1 + x2 + x3 = -2"));
+									expected1.Add(Condition.Parse("2x1 + 2x2 + 3x3 = 8"));
+									expected1.Add(Condition.Parse("x1 + 3x2 + 2x3 = 6"));
 									float[,] expectedMatrixOfA = new float[,] {
 												{3,1,1 }, {2,2,3 }, {1,3,2 }
 												};

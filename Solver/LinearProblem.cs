@@ -59,15 +59,15 @@ namespace Solver
 									foreach (Condition cond in conditions)
 									{
 												Condition standarized = (Condition)cond.Clone();
-												if (standarized.CONDITION < Condition.CONDITION_EQUAL)
+												if ((int)standarized.TYPE < (int)Condition.ConditionType.EQUAL)
 												{
 															standarized.ARGUMENTS["SPECIAL" + i] = 1;
 												}
-												else if (standarized.CONDITION > Condition.CONDITION_EQUAL)
+												else if ((int)standarized.TYPE > (int)Condition.ConditionType.EQUAL)
 												{
 															standarized.ARGUMENTS["SPECIAL" + i] = -1;
 												}
-												standarized.CONDITION = Condition.CONDITION_EQUAL;
+												standarized.TYPE = Condition.ConditionType.EQUAL;
 												i++;
 												standarizedConditions.Add(standarized);
 									}
