@@ -54,8 +54,11 @@ namespace Solver
 				}
 				public class Function
 				{
-								public static readonly string PATT_ARG = @"([-+]?\d*)(\w\d?)?";
+								public static readonly string PATT_ARG_NUM = @"[-+]?\d+";
+								public static readonly string PATT_ARG_NAM = @"(\w\d?)+";
+								public static readonly string PATT_ARG = @"(("+PATT_ARG_NUM+PATT_ARG_NAM+@")|(" + PATT_ARG_NUM+@")|("+PATT_ARG_NAM+@"))";
 								public static readonly string PATT_MATR = @"^\[[\d,\s]+\]$";
+								public static readonly string PATT_ARGS = @"^("+PATT_ARG+")*";
 								public float[] MULTIPLY_BY;
 								public Function(params float[] args)//Funkcje typu: -3x1 + 5x2 - 9x3
 								{
@@ -90,10 +93,18 @@ namespace Solver
 																}
 																return new Function(multiple_by);
 												}
-												else
+												else if(Regex.IsMatch(Regex.Replace(input, @"\s+", ""),PATT_ARGS))
 												{
-																throw new NotImplementedException();
+																MatchCollection matches = Regex.Matches(Regex.Replace(input, @"\s+", ""), PATT_ARG);
+																float[] multiple_by = new float[matches.Count];
+																for(int i=0;i<matches.Count;i++)
+																{
+																				Argument arg = Argument.Parse(matches[i].ToString());
+																				multiple_by[i] = arg.VALUE;
+																}
+																return new Function(multiple_by);
 												}
+												return null;
 								}
 				}
 				public class Target
@@ -122,6 +133,8 @@ namespace Solver
 								}
 								public static Target Parse(string input)
 								{
+												//Regex format1 = new Regex(@"\[[\d\s]+\]\s*->\s*(MAX|MIN)");
+												//Regex format2 = new Regex(@"");
 												Regex twoside = new Regex(@"->");
 												string[] sides = twoside.Split(input);
 												return new Target(sides[1], Function.Parse(sides[0]));
@@ -201,18 +214,18 @@ namespace Solver
 												{
 																case "<":
 																				return ConditionType.LESS;
-																				//break;
+																//break;
 																case "<=":
 																case "=<":
 																				return ConditionType.LESS_EQUAL;
-																				//break;
+																//break;
 																case ">=":
 																case "=>":
 																				return ConditionType.GREATER_EQUAL;
-																				//break;
+																//break;
 																case ">":
 																				return ConditionType.GREATER;
-																				//break;
+																//break;
 																default:
 																				return ConditionType.EQUAL;
 																				//break;
