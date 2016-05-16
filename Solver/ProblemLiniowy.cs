@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Solver
 {
-			public class LinearProblem : IEnumerable
+			public class ProblemLiniowy : IEnumerable
 			{
 						public float[,] matrixOfA;
 						public float[] matrixOfB;
@@ -17,7 +17,7 @@ namespace Solver
 						public List<Condition> standarizedConditions;
 						public Target targetFunction;
 
-						public LinearProblem(List<Condition> conds, Target target)
+						public ProblemLiniowy(List<Condition> conds, Target target)
 						{
 									conditions = conds;
 									targetFunction = target;

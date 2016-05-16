@@ -24,7 +24,7 @@ namespace Solver
 									string targ_str = txt_target.Text;
 									Target target = Target.Parse(targ_str);
 
-									LinearProblem theProblem = new LinearProblem(conds, target);
+									ProblemLiniowy theProblem = new ProblemLiniowy(conds, target);
 									float[] solution = theProblem.Solve();
 									string sol = "[ ";
 									foreach(float s in solution)

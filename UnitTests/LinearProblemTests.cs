@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 namespace Solver.Tests
 {
 			[TestClass()]
-			public class LinearProblemTests
+			public class ProblemLiniowyTests
 			{
 						List<Condition> lofconds1, lofconds2;
-						LinearProblem lp;
+						ProblemLiniowy lp;
 						[TestInitialize]
 						public void TestInitialize()
 						{
@@ -20,7 +20,7 @@ namespace Solver.Tests
 									lofconds1 = cp.ParseConditionsToList("-x1+x2+3x3>=15\n-x1+x2+x3<=6");
 									lofconds2 = cp.ParseConditionsToList("x1+x2<=10\n -2x1+x2<=4");
 									Target t2 = new Target("MAX", new Function(1, 2));
-									lp = new LinearProblem(lofconds2, t2);
+									lp = new ProblemLiniowy(lofconds2, t2);
 						}
 						[TestMethod()]
 						public void SolveTest()
